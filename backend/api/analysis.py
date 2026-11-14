@@ -46,18 +46,28 @@ async def list_drivers(session_key: int):
     ]
 
 @router.get("/analyze")
-async def compare_drivers(session_key: int, driver_1: int, driver_2: int):
+async def analyze_telemetry(session_key: int, driver_1: int, driver_2: int):
     try:
-        laps_1, stints_1 = await get_driver_laps_and_stints(session_key, driver_1)
-        laps_2, stints_2 = await get_driver_laps_and_stints(session_key, driver_2)
-
-        result_1 = analyze_driver_stints(laps_1, stints_1)
-        result_2 = analyze_driver_stints(laps_2, stints_2)
-
+        # Tarik data laps & stints untuk kedua pembalap
+        laps_d1, stints_d1 = await get_driver_laps_and_stints(session_key, driver_1)
+        laps_d2, stints_d2 = await get_driver_laps_and_stints(session_key, driver_2)
+        
+        # Jalankan fungsi analisis regresi / degradasi banmu di sini
+        analysis_d1 = process_driver_telemetry(laps_d1, stints_d1)
+        analysis_d2 = process_driver_telemetry(laps_d2, stints_d2)
+        
         return {
-            "session_key": session_key,
-            "driver_1": {"number": driver_1, "analysis": result_1},
-            "driver_2": {"number": driver_2, "analysis": result_2}
+            "driver_1": {"analysis": analysis_d1},
+            "driver_2": {"analysis": analysis_d2}
         }
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        # Jika terjadi error data kosong/tidak valid, kembalikan struktur kosong dengan warning
+        empty_result = {
+            "clean_laps": [],
+            "stint_summary": [],
+            "warning": "Data telemetri untuk sesi atau pembalap ini belum tersedia atau tidak lengkap di OpenF1."
+        }
+        return {
+            "driver_1": {"analysis": empty_result},
+            "driver_2": {"analysis": empty_result}
+        }
