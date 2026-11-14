@@ -312,6 +312,16 @@ analyzeBtn.addEventListener("click", async () => {
         loadingEl.classList.add("hidden");
         alert("Terjadi kesalahan saat menganalisis data. Coba pilih sesi balapan lain.");
     }
+
+    if (!res.ok) throw new Error("Gagal mengambil data analisis");
+        const data = await res.json();
+
+        if (!data.driver_1 || !data.driver_2 || (data.driver_1.analysis.clean_laps.length === 0 && data.driver_2.analysis.clean_laps.length === 0)) {
+            clearInterval(lightInterval);
+            loadingEl.classList.add("hidden");
+            alert("Data telemetri untuk pembalap pada sesi ini belum tersedia di OpenF1. Silakan pilih sesi Main Race lainnya.");
+            return;
+        }
 });
 
 function generateBeginnerInsight(data, d1Obj, d2Obj) {

@@ -1061,3 +1061,56 @@ th:nth-last-child(-n+2) .help-tip::after {
     visibility: visible;
     transform: translateY(0);
 }
+
+/* =========================================
+   RESPONSIF MOBILE FIX (TAMPILAN HP)
+   ========================================= */
+@media (max-width: 768px) {
+    .app-bar-inner {
+        padding: 0.75rem 1rem;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.6rem;
+    }
+
+    .status-cluster {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .brand-title {
+        font-size: 1rem;
+    }
+
+    .container {
+        padding: 0.75rem;
+    }
+
+    .control-panel {
+        padding: 1rem;
+        gap: 0.8rem;
+    }
+
+    /* Pastikan layout hasil analisis menjadi 1 kolom di HP */
+    .results-layout {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .chart-wrapper {
+        min-height: 300px;
+    }
+
+    .matchup-stage {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+        gap: 1rem;
+    }
+
+    .matchup-circuit {
+        border: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 0.75rem 0;
+    }
+}
