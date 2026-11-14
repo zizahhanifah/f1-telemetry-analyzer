@@ -1,35 +1,9 @@
 from fastapi import APIRouter, HTTPException
-from backend.services.openf1_service import get_sessions, get_drivers, get_driver_laps_and_stints
+from backend.services.openf1_service import get_drivers, get_driver_laps_and_stints
 from backend.algorithms.degradation import analyze_driver_stints
 import traceback
 
-router = APIRouter(prefix="/api", tags=["F1 Telemetry Analysis"])
-
-@router.get("/sessions")
-async def list_sessions(year: int = 2024):
-    sessions = await get_sessions(year)
-    result = []
-    for s in sessions:
-        # Lewati slot jadwal awal Bahrain GP April 2026 (11261) yang dipindah ke Oktober (11731)
-        if s["session_key"] == 11261:
-            continue
-
-        country = s["country_name"]
-        circuit = s["circuit_short_name"]
-
-        if year == 2026 and (country == "Bahrain" or circuit == "Sakhir"):
-            country = "Bahrain"
-            circuit = "Sepang"
-
-        result.append({
-            "session_key": s["session_key"],
-            "country": country,
-            "circuit": circuit,
-            "session_name": s.get("session_name", "Race"),
-            "circuit_image": s.get("circuit_image", ""),
-            "date": s["date_start"]
-        })
-    return result
+router = APIRouter(tags=["F1 Telemetry Analysis"])
 
 @router.get("/drivers/{session_key}")
 async def list_drivers(session_key: int):
@@ -52,7 +26,6 @@ async def analyze_telemetry(session_key: int, driver_1: int, driver_2: int):
         laps_d1, stints_d1 = await get_driver_laps_and_stints(session_key, driver_1)
         laps_d2, stints_d2 = await get_driver_laps_and_stints(session_key, driver_2)
         
-        # Gunakan nama fungsi yang benar sesuai impor di atas
         analysis_d1 = analyze_driver_stints(laps_d1, stints_d1)
         analysis_d2 = analyze_driver_stints(laps_d2, stints_d2)
         
@@ -63,8 +36,6 @@ async def analyze_telemetry(session_key: int, driver_1: int, driver_2: int):
     except Exception as e:
         print("--- ERROR SAAT ANALISIS ---")
         traceback.print_exc()
-        print(f"Pesan Error: {e}")
-        
         empty_result = {
             "clean_laps": [],
             "stint_summary": [],

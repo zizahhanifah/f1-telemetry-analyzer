@@ -9,6 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
     <div class="bg-orb orb-cyan"></div>
@@ -40,51 +41,162 @@
     </header>
 
     <main class="container">
+            <!-- Tab Navigasi Menu Utama -->
+        <div class="nav-tabs-bar">
+            <button class="nav-tab-btn active" data-target="telemetrySection">📊 Telemetry Analyzer</button>
+            <button class="nav-tab-btn" data-target="tyreLabSection">🛞 Tyre Lab</button>
+            <button class="nav-tab-btn" data-target="quizSection">🧠 F1 Strategy Quiz</button>
+        </div>
         <!-- Panel Kontrol Glassmorphism -->
-        <section class="glass-panel control-panel">
-            <div class="form-group">
-                <label for="yearSelect">MUSIM</label>
-                <select id="yearSelect">
-                    <option value="2026">2026 Season</option>
-                    <option value="2025">2025 Season</option>
-                    <option value="2024" selected>2024 Season</option>
-                    <option value="2023">2023 Season</option>
-                </select>
-            </div>
+        <div id="telemetrySection" class="content-tab active">
+            <section class="glass-panel control-panel">
+                <div class="form-group">
+                    <label for="yearSelect">MUSIM</label>
+                    <select id="yearSelect">
+                        <option value="2026">2026 Season</option>
+                        <option value="2025">2025 Season</option>
+                        <option value="2024" selected>2024 Season</option>
+                        <option value="2023">2023 Season</option>
+                    </select>
+                </div>
 
-            <div class="form-group">
-                <label for="sessionTypeSelect">TIPE SESI</label>
-                <select id="sessionTypeSelect">
-                    <option value="Race" selected>Main Race (Grand Prix)</option>
-                    <option value="Sprint">Sprint Race</option>
-                </select>
-            </div>
+                <div class="form-group">
+                    <label for="sessionTypeSelect">TIPE SESI</label>
+                    <select id="sessionTypeSelect">
+                        <option value="Race" selected>Main Race (Grand Prix)</option>
+                        <option value="Sprint">Sprint Race</option>
+                    </select>
+                </div>
 
-            <div class="form-group">
-                <label for="sessionSelect">SIRKUIT / GRAND PRIX</label>
-                <select id="sessionSelect">
-                    <option value="">Memuat daftar sirkuit...</option>
-                </select>
-            </div>
+                <div class="form-group">
+                    <label for="sessionSelect">SIRKUIT / GRAND PRIX</label>
+                    <select id="sessionSelect">
+                        <option value="">Memuat daftar sirkuit...</option>
+                    </select>
+                </div>
 
-            <div class="form-group">
-                <label for="driver1Select">PEMBALAP A</label>
-                <select id="driver1Select" disabled>
-                    <option value="">Pilih sirkuit dulu</option>
-                </select>
-            </div>
+                <div class="form-group">
+                    <label for="driver1Select">PEMBALAP A</label>
+                    <select id="driver1Select" disabled>
+                        <option value="">Pilih sirkuit dulu</option>
+                    </select>
+                </div>
 
-            <div class="form-group">
-                <label for="driver2Select">PEMBALAP B</label>
-                <select id="driver2Select" disabled>
-                    <option value="">Pilih sirkuit dulu</option>
-                </select>
-            </div>
+                <div class="form-group">
+                    <label for="driver2Select">PEMBALAP B</label>
+                    <select id="driver2Select" disabled>
+                        <option value="">Pilih sirkuit dulu</option>
+                    </select>
+                </div>
 
-            <button id="analyzeBtn" class="glow-btn" disabled>
-                <span>ANALISIS TELEMETRI</span>
-            </button>
-        </section>
+                <button id="analyzeBtn" class="glow-btn" disabled>
+                    <span>ANALISIS TELEMETRI</span>
+                </button>
+            </section>
+        </div>
+
+        <!-- Section 1: Telemetry Analyzer (Bungkus kode analisis lama di sini) -->
+        <div id="telemetrySection" class="content-tab active">
+            <!-- [Semua elemen Telemetry, Insight Banner, Grafik & Tabel yang sudah ada sebelumnya] -->
+        </div>
+
+        <!-- Section 2: 3D Tyre Lab & Edukasi Pemula -->
+        <div id="tyreLabSection" class="content-tab hidden">
+            <div class="tyre-lab-grid">
+                <!-- Sisi Kiri: Canvas 3D Three.js -->
+                <!-- Ganti bagian webglContainer dengan Photo Lab Interaktif -->
+                <div class="glass-panel canvas-card">
+                    <div class="card-header">
+                        <h2>TYRE VISUAL INSPECTOR</h2>
+                        <span class="filter-info">Klik spot pada foto untuk info detail</span>
+                    </div>
+                    
+                    <!-- Wadah Foto Interaktif dengan Hotspot -->
+                    <div class="interactive-photo-container" id="photoContainer">
+                        <!-- Gambar Ban (Ganti src dengan foto ban asli pilihanmu di folder assets) -->
+                        <img id="tyreImageDisplay" src="assets/soft_tyre.jpeg" alt="F1 Tyre" class="active-tyre-img">
+                        
+                        <!-- Titik Hotspot Interaktif di atas Foto -->
+                        <div class="hotspot" style="top: 35%; left: 50%;" data-info="Tapak luar dirancang untuk menahan beban lateral maksimum saat menikung tajam.">
+                            <span class="pulse-ring"></span>
+                            <span class="hotspot-dot"></span>
+                            <span class="hotspot-label">Tapak Ban</span>
+                        </div>
+                        
+                        <div class="hotspot" style="top: 65%; left: 55%;" data-info="Dinding samping (Sidewart) bertuliskan Pirelli P Zero dengan warna penanda kompon khas.">
+                            <span class="pulse-ring"></span>
+                            <span class="hotspot-dot"></span>
+                            <span class="hotspot-label">Dinding & Logo</span>
+                        </div>
+
+                        <div class="hotspot" style="top: 50%; left: 35%;" data-info="Velg karbon ringan 18 inci standar regulasi modern F1.">
+                            <span class="pulse-ring"></span>
+                            <span class="hotspot-dot"></span>
+                            <span class="hotspot-label">Velg 18"</span>
+                        </div>
+                    </div>
+
+                    <!-- Tombol Pilihan Kompon -->
+                    <div class="compound-selector-bar">
+                        <button class="compound-btn active" data-compound="soft" style="--btn-color: #ff2a5f;">SOFT</button>
+                        <button class="compound-btn" data-compound="medium" style="--btn-color: #ffd000;">MEDIUM</button>
+                        <button class="compound-btn" data-compound="hard" style="--btn-color: #f3f4f6;">HARD</button>
+                        <button class="compound-btn" data-compound="inter" style="--btn-color: #00e676;">INTER</button>
+                        <button class="compound-btn" data-compound="wet" style="--btn-color: #2979ff;">WET</button>
+                    </div>
+
+                    <div id="hotspotInfoBox" class="hotspot-info-box">
+                        💡 <i>Klik salah satu titik hotspot pada foto ban di atas untuk melihat detail bagian komponennya di sini.</i>
+                    </div>
+                </div>
+
+                <!-- Sisi Kanan: Spesifikasi & Penjelasan untuk Awam -->
+                <div class="glass-panel tyre-info-card">
+                    <h3 id="tyreNameTitle" class="neon-text">PIRELLI P ZERO SOFT (C5)</h3>
+                    <p id="tyreDescText" class="tyre-desc">Kompon paling lunak yang memberikan cengkeraman maksimal untuk kecepatan satu lap kilat, namun sangat rentan terhadap keausan tinggi.</p>
+                    
+                    <div class="tyre-specs-list">
+                        <div class="spec-row">
+                            <span>Suhu Operasional Optimal:</span>
+                            <strong id="specTemp">85°C - 100°C</strong>
+                        </div>
+                        <div class="spec-row">
+                            <span>Estimasi Daya Tahan:</span>
+                            <strong id="specLife">15 - 20 Lap</strong>
+                        </div>
+                        <div class="spec-row">
+                            <span>Karakteristik Utama:</span>
+                            <strong id="specChar">Super Cepat, Degradasi Tinggi</strong>
+                        </div>
+                    </div>
+
+                    <div class="beginner-tip-box">
+                        <h4>💡 Tips untuk Pemula:</h4>
+                        <p>Tim balap menggunakan ban Soft saat kualifikasi atau akhir balapan (*stint* pendek) ketika butuh memacu mobil sekencang-kencangnya.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 3: F1 Strategy Quiz -->
+        <div id="quizSection" class="content-tab hidden">
+            <div class="glass-panel quiz-card">
+                <div class="quiz-header">
+                    <h2>F1 PIT-WALL TACTICAL QUIZ</h2>
+                    <span id="quizScoreBadge">Skor: 0</span>
+                </div>
+                <div id="quizBody">
+                    <div id="questionProgress" class="quiz-progress">Pertanyaan 1 dari 4</div>
+                    <h3 id="quizQuestion">Memuat pertanyaan kuis...</h3>
+                    <div id="quizOptions" class="quiz-options-grid"></div>
+                </div>
+                <div id="quizResultScreen" class="hidden text-center">
+                    <h3>🎉 Kuis Selesai!</h3>
+                    <p id="quizFinalMessage">Kamu hebat dalam membaca strategi ban!</p>
+                    <button id="restartQuizBtn" class="primary-btn">Ulangi Kuis</button>
+                </div>
+            </div>
+        </div>
 
         <!-- Pre-Analysis Matchup Preview (Muncul saat Sirkuit & Pembalap dipilih) -->
         <section id="matchupPreview" class="glass-panel matchup-stage hidden">
