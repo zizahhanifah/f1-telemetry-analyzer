@@ -1,6 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from backend.services.openf1_service import get_sessions, get_drivers, get_driver_laps_and_stints
 from backend.algorithms.degradation import analyze_driver_stints
+import traceback
 
 router = APIRouter(prefix="/api", tags=["F1 Telemetry Analysis"])
 
@@ -48,24 +49,26 @@ async def list_drivers(session_key: int):
 @router.get("/analyze")
 async def analyze_telemetry(session_key: int, driver_1: int, driver_2: int):
     try:
-        # Tarik data laps & stints untuk kedua pembalap
         laps_d1, stints_d1 = await get_driver_laps_and_stints(session_key, driver_1)
         laps_d2, stints_d2 = await get_driver_laps_and_stints(session_key, driver_2)
         
-        # Jalankan fungsi analisis regresi / degradasi banmu di sini
-        analysis_d1 = process_driver_telemetry(laps_d1, stints_d1)
-        analysis_d2 = process_driver_telemetry(laps_d2, stints_d2)
+        # Gunakan nama fungsi yang benar sesuai impor di atas
+        analysis_d1 = analyze_driver_stints(laps_d1, stints_d1)
+        analysis_d2 = analyze_driver_stints(laps_d2, stints_d2)
         
         return {
             "driver_1": {"analysis": analysis_d1},
             "driver_2": {"analysis": analysis_d2}
         }
     except Exception as e:
-        # Jika terjadi error data kosong/tidak valid, kembalikan struktur kosong dengan warning
+        print("--- ERROR SAAT ANALISIS ---")
+        traceback.print_exc()
+        print(f"Pesan Error: {e}")
+        
         empty_result = {
             "clean_laps": [],
             "stint_summary": [],
-            "warning": "Data telemetri untuk sesi atau pembalap ini belum tersedia atau tidak lengkap di OpenF1."
+            "warning": f"Gagal memproses data: {str(e)}"
         }
         return {
             "driver_1": {"analysis": empty_result},

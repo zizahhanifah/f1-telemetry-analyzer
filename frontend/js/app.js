@@ -262,7 +262,7 @@ analyzeBtn.addEventListener("click", async () => {
     const d2 = driver2Select.value;
 
     if (d1 === d2) {
-        alert("Pilih dua pembalap yang berbeda untuk dibandingkan!");
+        showF1Notification("Pilih dua pembalap yang berbeda untuk dibandingkan!", "error");
         return;
     }
 
@@ -281,7 +281,7 @@ analyzeBtn.addEventListener("click", async () => {
         if (data.driver_1.analysis.clean_laps.length === 0 && data.driver_2.analysis.clean_laps.length === 0) {
             clearInterval(lightInterval);
             loadingEl.classList.add("hidden");
-            alert(data.driver_1.analysis.warning || "Data telemetri balapan ini belum tersedia.");
+            showF1Notification(data.driver_1?.analysis?.warning || "Data telemetri untuk sesi ini belum tersedia.", "error");
             return;
         }
 
@@ -310,7 +310,7 @@ analyzeBtn.addEventListener("click", async () => {
     } catch (err) {
         clearInterval(lightInterval);
         loadingEl.classList.add("hidden");
-        alert("Terjadi kesalahan saat menganalisis data. Coba pilih sesi balapan lain.");
+        showF1Notification("Terjadi kesalahan saat menganalisis data. Coba pilih sesi balapan lain.");
     }
 
     if (!res.ok) throw new Error("Gagal mengambil data analisis");
@@ -319,7 +319,7 @@ analyzeBtn.addEventListener("click", async () => {
         if (!data.driver_1 || !data.driver_2 || (data.driver_1.analysis.clean_laps.length === 0 && data.driver_2.analysis.clean_laps.length === 0)) {
             clearInterval(lightInterval);
             loadingEl.classList.add("hidden");
-            alert("Data telemetri untuk pembalap pada sesi ini belum tersedia di OpenF1. Silakan pilih sesi Main Race lainnya.");
+            showF1Notification("Data telemetri untuk pembalap pada sesi ini belum tersedia. Silakan pilih sesi Main Race lainnya.");
             return;
         }
 });
@@ -549,3 +549,29 @@ function initCustomDropdowns() {
 
 initCustomDropdowns();
 loadSessions();
+
+function showF1Notification(message, type = 'error') {
+    let container = document.getElementById("f1ToastContainer");
+    if (!container) {
+        container = document.createElement("div");
+        container.id = "f1ToastContainer";
+        document.body.appendChild(container);
+    }
+
+    const toast = document.createElement("div");
+    toast.className = `f1-toast ${type}`;
+    
+    const icon = type === 'error' ? '⚠️' : '💡';
+    toast.innerHTML = `
+        <div class="f1-toast-icon">${icon}</div>
+        <div style="flex-grow: 1; line-height: 1.4;">${message}</div>
+    `;
+
+    container.appendChild(toast);
+
+    // Otomatis hilang setelah 4 detik
+    setTimeout(() => {
+        toast.style.animation = "fadeOutToast 0.3s ease forwards";
+        setTimeout(() => toast.remove(), 300);
+    }, 4000);
+}
