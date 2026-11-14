@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>F1 Pit-Wall Telemetry & Tyre Degradation Analyzer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="bg-orb orb-cyan"></div>
+    <div class="bg-orb orb-red"></div>
+    <div class="bg-grid"></div>
+
+<!-- Futuristic F1 Command App Bar -->
+    <header class="app-bar">
+        <div class="app-bar-inner">
+            <div class="brand-area">
+                <div class="f1-logo-mark" aria-label="F1 Logo">
+                    <svg width="68" height="24" viewBox="0 0 120 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M14 4H84L78 10H22L18 14H66L60 20H12L4 28H-2L14 4Z" fill="#ff2a5f"/>
+                        <path d="M24 16H62L57 21H20L13 28H6L24 16Z" fill="#ff2a5f"/>
+                        <path d="M92 4H103L85 28H74L92 4Z" fill="#ff2a5f"/>
+                    </svg>
+                </div>
+                <div class="brand-divider"></div>
+                <div class="brand-text">
+                    <div class="brand-title">PIT-WALL <span class="accent-text">TELEMETRY</span></div>
+                    <div class="brand-sub">LAP PACE & TYRE DEGRADATION ENGINE</div>
+                </div>
+            </div>
+
+            <div class="status-cluster">
+                <div class="season-pill" id="headerSessionBadge">2024 • MAIN RACE</div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Panel Kontrol Glassmorphism -->
+        <section class="glass-panel control-panel">
+            <div class="form-group">
+                <label for="yearSelect">MUSIM</label>
+                <select id="yearSelect">
+                    <option value="2026">2026 Season</option>
+                    <option value="2025">2025 Season</option>
+                    <option value="2024" selected>2024 Season</option>
+                    <option value="2023">2023 Season</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="sessionTypeSelect">TIPE SESI</label>
+                <select id="sessionTypeSelect">
+                    <option value="Race" selected>Main Race (Grand Prix)</option>
+                    <option value="Sprint">Sprint Race</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="sessionSelect">SIRKUIT / GRAND PRIX</label>
+                <select id="sessionSelect">
+                    <option value="">Memuat daftar sirkuit...</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="driver1Select">PEMBALAP A</label>
+                <select id="driver1Select" disabled>
+                    <option value="">Pilih sirkuit dulu</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="driver2Select">PEMBALAP B</label>
+                <select id="driver2Select" disabled>
+                    <option value="">Pilih sirkuit dulu</option>
+                </select>
+            </div>
+
+            <button id="analyzeBtn" class="glow-btn" disabled>
+                <span>ANALISIS TELEMETRI</span>
+            </button>
+        </section>
+
+        <!-- Pre-Analysis Matchup Preview (Muncul saat Sirkuit & Pembalap dipilih) -->
+        <section id="matchupPreview" class="glass-panel matchup-stage hidden">
+            <div class="matchup-driver left-driver" id="previewDriver1Card">
+                <div class="avatar-ring cyan-ring">
+                    <img id="previewD1Img" src="" alt="Driver 1">
+                </div>
+                <div class="driver-meta">
+                    <span class="driver-num" id="previewD1Num">#--</span>
+                    <h3 id="previewD1Name">Driver 1</h3>
+                    <p id="previewD1Team">Team</p>
+                </div>
+            </div>
+
+            <div class="matchup-circuit">
+                <span class="vs-badge">HEAD-TO-HEAD TELEMETRY</span>
+                <div class="circuit-frame">
+                    <img id="previewCircuitImg" src="" alt="Circuit Map">
+                </div>
+                <div class="circuit-title" id="previewCircuitName">Grand Prix Circuit</div>
+            </div>
+
+            <div class="matchup-driver right-driver" id="previewDriver2Card">
+                <div class="driver-meta right-align">
+                    <span class="driver-num red-num" id="previewD2Num">#--</span>
+                    <h3 id="previewD2Name">Driver 2</h3>
+                    <p id="previewD2Team">Team</p>
+                </div>
+                <div class="avatar-ring red-ring">
+                    <img id="previewD2Img" src="" alt="Driver 2">
+                </div>
+            </div>
+        </section>
+
+        <!-- Animasi Loading Race Start F1 -->
+        <div id="loading" class="glass-panel race-loader hidden">
+            <div class="gantry-lights">
+                <div class="light-pod"><span class="bulb" id="light1"></span></div>
+                <div class="light-pod"><span class="bulb" id="light2"></span></div>
+                <div class="light-pod"><span class="bulb" id="light3"></span></div>
+                <div class="light-pod"><span class="bulb" id="light4"></span></div>
+                <div class="light-pod"><span class="bulb" id="light5"></span></div>
+            </div>
+
+            <div class="race-track">
+                <div class="start-line"></div>
+                <div id="f1Car" class="f1-car revving">
+                    <svg width="95" height="38" viewBox="0 0 120 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="14" y="2" width="22" height="9" rx="2" fill="#0b0f17" stroke="#00f0ff" stroke-width="1.5"/>
+                        <rect x="14" y="37" width="22" height="9" rx="2" fill="#0b0f17" stroke="#00f0ff" stroke-width="1.5"/>
+                        <rect x="82" y="3" width="20" height="8" rx="2" fill="#0b0f17" stroke="#00f0ff" stroke-width="1.5"/>
+                        <rect x="82" y="37" width="20" height="8" rx="2" fill="#0b0f17" stroke="#00f0ff" stroke-width="1.5"/>
+                        <rect x="4" y="8" width="10" height="32" rx="2" fill="#00f0ff"/>
+                        <path d="M14 16 L45 11 L85 18 L112 22 L112 26 L85 30 L45 37 L14 32 Z" fill="#161e2e" stroke="#00f0ff" stroke-width="2"/>
+                        <path d="M104 6 L116 10 L116 38 L104 42 Z" fill="#00f0ff"/>
+                        <circle cx="56" cy="24" r="5" fill="#ff2a5f"/>
+                    </svg>
+                </div>
+            </div>
+
+            <p id="loadingText" class="loading-status">Menyalakan lampu start & menarik telemetri OpenF1...</p>
+        </div>
+
+<!-- Hasil Analisis (Grafik di Kiri, Detail Driver di Kanan) -->
+        <section id="resultSection" class="hidden">
+            <!-- 1. Kesimpulan Otomatis Bahasa Mudah (Beginner Insight Banner) -->
+            <div id="raceInsightBanner" class="glass-panel insight-banner">
+                <div class="insight-icon">💡</div>
+                <div class="insight-content">
+                    <div class="insight-label">KESIMPULAN ANALISIS TELEMETRI</div>
+                    <p id="raceInsightText">Memproses ringkasan perbandingan pembalap...</p>
+                </div>
+            </div>
+
+            <div class="results-layout">
+                <!-- Kolom Kiri: Grafik Telemetry -->
+                <div class="glass-panel chart-card">
+                    <div class="card-header">
+                        <h2>LAP TIME TELEMETRY TRACE <span class="unit-tag">(DETIK)</span></h2>
+                        <span class="filter-info" title="Lap masuk/keluar pit stop dan periode Safety Car otomatis dibuang agar grafik akurat">
+                            ℹ️ Pit Stop & Safety Car difilter
+                        </span>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="lapChart"></canvas>
+                    </div>
+
+                    <!-- Panduan Cara Baca Grafik & Ban untuk Pemula -->
+                    <div class="beginner-guide-bar">
+                        <div class="guide-item">
+                            <strong>📉 Cara Baca Grafik:</strong> Semakin <b>rendah</b> posisi garis, semakin <b>cepat</b> catatan waktu lap pembalap. Garis yang menanjak perlahan menandakan ban mulai aus.
+                        </div>
+                        <div class="tyre-legend">
+                            <span><i class="dot-soft"></i> <b>SOFT:</b> Paling cepat, cepat habis</span>
+                            <span><i class="dot-medium"></i> <b>MEDIUM:</b> Seimbang</span>
+                            <span><i class="dot-hard"></i> <b>HARD:</b> Paling awet, lebih lambat</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Kolom Kanan: Detail Informasi & Stint Driver A & B -->
+                <aside class="drivers-sidebar">
+                    <!-- Detail Driver A -->
+                    <div class="glass-panel driver-detail-card">
+                        <div class="driver-card-top cyan-border">
+                            <img id="resD1Img" class="res-avatar cyan-ring" src="" alt="Driver A">
+                            <div>
+                                <span class="driver-tag cyan-tag">PEMBALAP A</span>
+                                <h3 id="driver1Title">Pembalap 1</h3>
+                                <p id="resD1Team" class="res-team-name">Team</p>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table id="driver1Table">
+                                <thead>
+                                    <tr>
+                                        <th><span class="help-tip" data-tip="Periode balapan sebelum pembalap masuk pit ganti ban">STINT ?</span></th>
+                                        <th><span class="help-tip" data-tip="Jenis kompon ban: Soft (Merah), Medium (Kuning), Hard (Putih)">BAN ?</span></th>
+                                        <th><span class="help-tip" data-tip="Jumlah putaran bersih tanpa gangguan pit stop">LAPS ?</span></th>
+                                        <th><span class="help-tip" data-tip="Rata-rata waktu tempuh per putaran (lebih kecil = lebih cepat)">AVG ?</span></th>
+                                        <th><span class="help-tip" data-tip="Putaran tercepat pembalap pada stint ini">BEST ?</span></th>
+                                        <th><span class="help-tip" data-tip="Penambahan waktu per lap akibat ban aus. (+) artinya makin lambat, (-) artinya makin kencang">DEG/LAP ?</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Detail Driver B -->
+                    <div class="glass-panel driver-detail-card">
+                        <div class="driver-card-top red-border">
+                            <img id="resD2Img" class="res-avatar red-ring" src="" alt="Driver B">
+                            <div>
+                                <span class="driver-tag red-tag">PEMBALAP B</span>
+                                <h3 id="driver2Title">Pembalap 2</h3>
+                                <p id="resD2Team" class="res-team-name">Team</p>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table id="driver2Table">
+                                <thead>
+                                    <tr>
+                                        <th><span class="help-tip" data-tip="Periode balapan sebelum pembalap masuk pit ganti ban">STINT ?</span></th>
+                                        <th><span class="help-tip" data-tip="Jenis kompon ban: Soft (Merah), Medium (Kuning), Hard (Putih)">BAN ?</span></th>
+                                        <th><span class="help-tip" data-tip="Jumlah putaran bersih tanpa gangguan pit stop">LAPS ?</span></th>
+                                        <th><span class="help-tip" data-tip="Rata-rata waktu tempuh per putaran (lebih kecil = lebih cepat)">AVG ?</span></th>
+                                        <th><span class="help-tip" data-tip="Putaran tercepat pembalap pada stint ini">BEST ?</span></th>
+                                        <th><span class="help-tip" data-tip="Penambahan waktu per lap akibat ban aus. (+) artinya makin lambat, (-) artinya makin kencang">DEG/LAP ?</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
