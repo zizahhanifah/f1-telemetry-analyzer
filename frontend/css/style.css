@@ -953,7 +953,7 @@ tr:hover td {
     gap: 0.4rem;
 }
 
-.dot-soft, .dot-medium, .dot-hard {
+.dot-soft, .dot-medium, .dot-hard, .dot-intermediate, .dot-wet {
     width: 10px;
     height: 10px;
     border-radius: 50%;
@@ -962,7 +962,8 @@ tr:hover td {
 .dot-soft { background-color: #ff2a5f; box-shadow: 0 0 6px #ff2a5f; }
 .dot-medium { background-color: #ffd000; box-shadow: 0 0 6px #ffd000; }
 .dot-hard { background-color: #f3f4f6; }
-
+.dot-intermediate { background-color: #00e676; box-shadow: 0 0 6px #00e676; }
+.dot-wet { background-color: #2979ff; box-shadow: 0 0 6px #2979ff; }
 
 /* =========================================
    FIX TOOLTIP & CUSTOM SCROLLBAR TABEL
