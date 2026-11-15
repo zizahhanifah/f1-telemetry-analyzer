@@ -1,4 +1,4 @@
-const API_BASE = 'http://127.0.0.1:8000';
+const API_BASE = "";
 
 const yearSelect = document.getElementById("yearSelect");
 const sessionTypeSelect = document.getElementById("sessionTypeSelect");
