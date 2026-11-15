@@ -631,11 +631,11 @@ window.initThreeTyre = function() {
     const compoundBtns = document.querySelectorAll('.compound-btn');
     const tyreImage = document.getElementById('tyreImageDisplay');
     const tyreImages = {
-        soft: 'assets/soft_tyre.png',
-        medium: 'assets/medium_tyre.png',
-        hard: 'assets/hard_tyre.png',
-        inter: 'assets/inter_tyre.png',
-        wet: 'assets/wet_tyre.png'
+        soft: 'assets/soft_tyre.webp',
+        medium: 'assets/medium_tyre.webp',
+        hard: 'assets/hard_tyre.webp',
+        inter: 'assets/inter_tyre.webp',
+        wet: 'assets/wet_tyre.webp'
     };
     compoundBtns.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -653,7 +653,7 @@ window.initThreeTyre = function() {
             if (tyreImage) {
                 tyreImage.style.opacity = '0';
                 setTimeout(() => {
-                    tyreImage.src = tyreImages[key] || 'assets/soft_tyre.png';
+                    tyreImage.src = tyreImages[key] || 'assets/soft_tyre.webp';
                     tyreImage.style.opacity = '1';
                 }, 200);
             }
