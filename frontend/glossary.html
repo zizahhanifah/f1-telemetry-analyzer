@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formula 1 Pit-Wall Telemetry Engine - Pit-Wall Glossary</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="bg-orb orb-cyan"></div>
+    <div class="bg-orb orb-red"></div>
+    <div class="bg-grid"></div>
+
+    <!-- Futuristic F1 Command App Bar -->
+    <header class="app-bar">
+        <div class="app-bar-inner">
+            <div class="brand-area">
+                <div class="f1-logo-mark" aria-label="F1 Logo">
+                    <svg width="68" height="24" viewBox="0 0 120 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M14 4H84L78 10H22L18 14H66L60 20H12L4 28H-2L14 4Z" fill="#ff2a5f"/>
+                        <path d="M24 16H62L57 21H20L13 28H6L24 16Z" fill="#ff2a5f"/>
+                        <path d="M92 4H103L85 28H74L92 4Z" fill="#ff2a5f"/>
+                    </svg>
+                </div>
+                <div class="brand-divider"></div>
+                <div class="brand-text">
+                    <div class="brand-title">PIT-WALL <span class="accent-text">TELEMETRY</span></div>
+                    <div class="brand-sub">LAP PACE & TYRE DEGRADATION ENGINE</div>
+                </div>
+            </div>
+            <div class="status-cluster">
+                <div class="season-pill" id="headerSessionBadge">2024 • MAIN RACE</div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <!-- Tab Navigasi Menu Utama (Disamakan menggunakan .nav-tabs-bar & button) -->
+        <div class="nav-tabs-bar">
+            <button class="nav-tab-btn" onclick="window.location.href='index.html?tab=home'">🏠 Home</button>
+            <button class="nav-tab-btn" onclick="window.location.href='index.html?tab=telemetry'">📊 Telemetry Analyzer</button>
+            <button class="nav-tab-btn" onclick="window.location.href='index.html?tab=tyrelab'">🛞 Tyre Lab</button>
+            <button class="nav-tab-btn" onclick="window.location.href='index.html?tab=quiz'">🧠 F1 Strategy Quiz</button>
+            <button class="nav-tab-btn active" onclick="window.location.href='glossary.html'">📖 Pit-Wall Glossary</button>
+        </div>
+
+        <!-- GLOSSARY SECTION -->
+        <section class="glass-panel glossary-card" style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(0, 240, 255, 0.25); border-radius: 16px; padding: 35px; backdrop-filter: blur(12px); box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4); display: flex; flex-direction: column; gap: 25px;">
+            <div class="glossary-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+                <h2 style="font-family: 'Orbitron', sans-serif; font-size: 1.4rem; color: #00f0ff; letter-spacing: 1px;">GLOSARIUM ISTILAH PIT-WALL</h2>
+                <div class="search-box" style="position: relative; width: 100%; max-width: 380px;">
+                    <span class="search-icon" style="position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: #9ca3af; font-size: 1.1rem;">🔍</span>
+                    <input type="text" id="glossarySearch" class="search-input" placeholder="Cari istilah, misal: undercut, box..." style="width: 100%; background: rgba(10, 14, 23, 0.95); border: 1px solid rgba(255, 255, 255, 0.2); color: #f3f4f6; padding: 12px 18px 12px 42px; border-radius: 10px; font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.95rem; outline: none;">
+                </div>
+            </div>
+
+            <div class="glossary-grid" id="glossaryGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px;">
+                <!-- Item 1 -->
+                <div class="term-item" data-keywords="undercut pit ban strategi" style="background: rgba(10, 14, 23, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 22px; display: flex; flex-direction: column; gap: 10px;">
+                    <div class="term-title" style="font-family: 'Orbitron', sans-serif; font-size: 1.05rem; color: #fff; display: flex; justify-content: space-between; align-items: center;">
+                        <span>Undercut</span>
+                        <span class="term-category" style="font-size: 0.7rem; font-family: 'Orbitron', sans-serif; background: rgba(0, 240, 255, 0.1); color: #00f0ff; padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(0, 240, 255, 0.2);">Strategi</span>
+                    </div>
+                    <div class="term-definition" style="font-size: 0.9rem; color: #9ca3af; line-height: 1.6;">Masuk pit lebih cepat dari pembalap di depan untuk memakai ban baru yang segar, sehingga di lap-lap berikutnya bisa mencetak waktu lebih cepat dan menyalip saat pembalap depan masuk pit.</div>
+                    <div class="term-simple" style="background: rgba(0, 230, 118, 0.06); border-left: 3px solid #00e676; padding: 8px 12px; border-radius: 0 8px 8px 0; font-size: 0.85rem; color: #cbd5e1; margin-top: 5px;">💡 <strong>Ringkasan:</strong> Curi start masuk pit biar bisa nyalip pas musuh ganti ban.</div>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="term-item" data-keywords="overcut pit ban strategi" style="background: rgba(10, 14, 23, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 22px; display: flex; flex-direction: column; gap: 10px;">
+                    <div class="term-title" style="font-family: 'Orbitron', sans-serif; font-size: 1.05rem; color: #fff; display: flex; justify-content: space-between; align-items: center;">
+                        <span>Overcut</span>
+                        <span class="term-category" style="font-size: 0.7rem; font-family: 'Orbitron', sans-serif; background: rgba(0, 240, 255, 0.1); color: #00f0ff; padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(0, 240, 255, 0.2);">Strategi</span>
+                    </div>
+                    <div class="term-definition" style="font-size: 0.9rem; color: #9ca3af; line-height: 1.6;">Kebalikan dari undercut. Pembalap di depan menunda masuk pit dan terus memacu ban lamanya dengan kencang, berharap saat keluar pit posisinya tetap di depan rival.</div>
+                    <div class="term-simple" style="background: rgba(0, 230, 118, 0.06); border-left: 3px solid #00e676; padding: 8px 12px; border-radius: 0 8px 8px 0; font-size: 0.85rem; color: #cbd5e1; margin-top: 5px;">💡 <strong>Ringkasan:</strong> Tahan diri nggak masuk pit duluan demi ngebut di udara bersih.</div>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="term-item" data-keywords="tyre cliff ban botak aus" style="background: rgba(10, 14, 23, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 22px; display: flex; flex-direction: column; gap: 10px;">
+                    <div class="term-title" style="font-family: 'Orbitron', sans-serif; font-size: 1.05rem; color: #fff; display: flex; justify-content: space-between; align-items: center;">
+                        <span>Tyre Cliff</span>
+                        <span class="term-category" style="font-size: 0.7rem; font-family: 'Orbitron', sans-serif; background: rgba(0, 240, 255, 0.1); color: #00f0ff; padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(0, 240, 255, 0.2);">Ban</span>
+                    </div>
+                    <div class="term-definition" style="font-size: 0.9rem; color: #9ca3af; line-height: 1.6;">Kondisi dramatis saat keausan ban mencapai batas ekstrem, di mana performa dan cengkeraman ban tiba-tiba anjlok drastis dalam 1-2 lap saja.</div>
+                    <div class="term-simple" style="background: rgba(0, 230, 118, 0.06); border-left: 3px solid #00e676; padding: 8px 12px; border-radius: 0 8px 8px 0; font-size: 0.85rem; color: #cbd5e1; margin-top: 5px;">💡 <strong>Ringkasan:</strong> Ban mendadak botak total, mobil jadi licin kayak di atas es.</div>
+                </div>
+
+                <!-- Item 4 -->
+                <div class="term-item" data-keywords="stint pit lap ban" style="background: rgba(10, 14, 23, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 22px; display: flex; flex-direction: column; gap: 10px;">
+                    <div class="term-title" style="font-family: 'Orbitron', sans-serif; font-size: 1.05rem; color: #fff; display: flex; justify-content: space-between; align-items: center;">
+                        <span>Stint</span>
+                        <span class="term-category" style="font-size: 0.7rem; font-family: 'Orbitron', sans-serif; background: rgba(0, 240, 255, 0.1); color: #00f0ff; padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(0, 240, 255, 0.2);">Strategi</span>
+                    </div>
+                    <div class="term-definition" style="font-size: 0.9rem; color: #9ca3af; line-height: 1.6;">Periode waktu atau jumlah putaran (laps) yang ditempuh mobil dari saat keluar dari pit lane sampai masuk pit lagi untuk ganti ban.</div>
+                    <div class="term-simple" style="background: rgba(0, 230, 118, 0.06); border-left: 3px solid #00e676; padding: 8px 12px; border-radius: 0 8px 8px 0; font-size: 0.85rem; color: #cbd5e1; margin-top: 5px;">💡 <strong>Ringkasan:</strong> Sesi lari mobil dalam satu kali pakai ban sebelum pit stop.</div>
+                </div>
+
+                <!-- Item 5 -->
+                <div class="term-item" data-keywords="graining blistering ban aus panas" style="background: rgba(10, 14, 23, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 22px; display: flex; flex-direction: column; gap: 10px;">
+                    <div class="term-title" style="font-family: 'Orbitron', sans-serif; font-size: 1.05rem; color: #fff; display: flex; justify-content: space-between; align-items: center;">
+                        <span>Graining & Blistering</span>
+                        <span class="term-category" style="font-size: 0.7rem; font-family: 'Orbitron', sans-serif; background: rgba(0, 240, 255, 0.1); color: #00f0ff; padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(0, 240, 255, 0.2);">Ban</span>
+                    </div>
+                    <div class="term-definition" style="font-size: 0.9rem; color: #9ca3af; line-height: 1.6;">Graining adalah karet ban terkelupas kasar karena meluncur di aspal dingin. Blistering adalah ban melepuh akibat panas berlebih di dalam struktur karet.</div>
+                    <div class="term-simple" style="background: rgba(0, 230, 118, 0.06); border-left: 3px solid #00e676; padding: 8px 12px; border-radius: 0 8px 8px 0; font-size: 0.85rem; color: #cbd5e1; margin-top: 5px;">💡 <strong>Ringkasan:</strong> Kerusakan fisik pada permukaan ban karena suhu yang tidak pas.</div>
+                </div>
+
+                <!-- Item 6 -->
+                <div class="term-item" data-keywords="delta time selisih waktu lap" style="background: rgba(10, 14, 23, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 22px; display: flex; flex-direction: column; gap: 10px;">
+                    <div class="term-title" style="font-family: 'Orbitron', sans-serif; font-size: 1.05rem; color: #fff; display: flex; justify-content: space-between; align-items: center;">
+                        <span>Delta Time</span>
+                        <span class="term-category" style="font-size: 0.7rem; font-family: 'Orbitron', sans-serif; background: rgba(0, 240, 255, 0.1); color: #00f0ff; padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(0, 240, 255, 0.2);">Teknis</span>
+                    </div>
+                    <div class="term-definition" style="font-size: 0.9rem; color: #9ca3af; line-height: 1.6;">Perbandingan selisih waktu antara satu catatan waktu (bisa antar lap, antar pembalap, atau waktu target saat Safety Car).</div>
+                    <div class="term-simple" style="background: rgba(0, 230, 118, 0.06); border-left: 3px solid #00e676; padding: 8px 12px; border-radius: 0 8px 8px 0; font-size: 0.85rem; color: #cbd5e1; margin-top: 5px;">💡 <strong>Ringkasan:</strong> Selisih waktu cepat/lambat dibanding target atau pembalap lain.</div>
+                </div>
+
+                <!-- Item 7 -->
+                <div class="term-item" data-keywords="parc ferme aturan regulasi mobil" style="background: rgba(10, 14, 23, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 22px; display: flex; flex-direction: column; gap: 10px;">
+                    <div class="term-title" style="font-family: 'Orbitron', sans-serif; font-size: 1.05rem; color: #fff; display: flex; justify-content: space-between; align-items: center;">
+                        <span>Parc Fermé</span>
+                        <span class="term-category" style="font-size: 0.7rem; font-family: 'Orbitron', sans-serif; background: rgba(0, 240, 255, 0.1); color: #00f0ff; padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(0, 240, 255, 0.2);">Regulasi</span>
+                    </div>
+                    <div class="term-definition" style="font-size: 0.9rem; color: #9ca3af; line-height: 1.6;">Aturan ketat setelah kualifikasi dimulai, di mana tim dilarang mengubah setelan dasar mobil (suspensi dan aero) kecuali ada komponen rusak parah.</div>
+                    <div class="term-simple" style="background: rgba(0, 230, 118, 0.06); border-left: 3px solid #00e676; padding: 8px 12px; border-radius: 0 8px 8px 0; font-size: 0.85rem; color: #cbd5e1; margin-top: 5px;">💡 <strong>Ringkasan:</strong> Mobil dikunci setelannya, tim nggak boleh asal ubah settingan lagi.</div>
+                </div>
+
+                <!-- Item 8 -->
+                <div class="term-item" data-keywords="out lap in lap pit lane" style="background: rgba(10, 14, 23, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 22px; display: flex; flex-direction: column; gap: 10px;">
+                    <div class="term-title" style="font-family: 'Orbitron', sans-serif; font-size: 1.05rem; color: #fff; display: flex; justify-content: space-between; align-items: center;">
+                        <span>Out Lap / In Lap</span>
+                        <span class="term-category" style="font-size: 0.7rem; font-family: 'Orbitron', sans-serif; background: rgba(0, 240, 255, 0.1); color: #00f0ff; padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(0, 240, 255, 0.2);">Sesi</span>
+                    </div>
+                    <div class="term-definition" style="font-size: 0.9rem; color: #9ca3af; line-height: 1.6;">Out Lap adalah lap saat keluar dari garasi menuju lintasan. In Lap adalah lap terakhir sebelum mobil berbelok masuk ke pit lane.</div>
+                    <div class="term-simple" style="background: rgba(0, 230, 118, 0.06); border-left: 3px solid #00e676; padding: 8px 12px; border-radius: 0 8px 8px 0; font-size: 0.85rem; color: #cbd5e1; margin-top: 5px;">💡 <strong>Ringkasan:</strong> Lap pemanasan keluar pit atau lap penutup mau masuk garasi.</div>
+                </div>
+
+                <!-- Item 9 -->
+                <div class="term-item" data-keywords="clean air dirty air turbulensi angin" style="background: rgba(10, 14, 23, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 22px; display: flex; flex-direction: column; gap: 10px;">
+                    <div class="term-title" style="font-family: 'Orbitron', sans-serif; font-size: 1.05rem; color: #fff; display: flex; justify-content: space-between; align-items: center;">
+                        <span>Clean Air / Dirty Air</span>
+                        <span class="term-category" style="font-size: 0.7rem; font-family: 'Orbitron', sans-serif; background: rgba(0, 240, 255, 0.1); color: #00f0ff; padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(0, 240, 255, 0.2);">Aerodinamika</span>
+                    </div>
+                    <div class="term-definition" style="font-size: 0.9rem; color: #9ca3af; line-height: 1.6;">Clean Air adalah udara bersih di depan mobil tanpa hambatan. Dirty Air adalah aliran udara turbulen di belakang mobil lain yang bikin mobil kehilangan cengkeraman.</div>
+                    <div class="term-simple" style="background: rgba(0, 230, 118, 0.06); border-left: 3px solid #00e676; padding: 8px 12px; border-radius: 0 8px 8px 0; font-size: 0.85rem; color: #cbd5e1; margin-top: 5px;">💡 <strong>Ringkasan:</strong> Nyetir tanpa halangan angin vs nyetir di buntut mobil lain yang bikin goyang.</div>
+                </div>
+
+                <!-- Item 10 -->
+                <div class="term-item" data-keywords="drs sayap salip lurus" style="background: rgba(10, 14, 23, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 22px; display: flex; flex-direction: column; gap: 10px;">
+                    <div class="term-title" style="font-family: 'Orbitron', sans-serif; font-size: 1.05rem; color: #fff; display: flex; justify-content: space-between; align-items: center;">
+                        <span>DRS (Drag Reduction System)</span>
+                        <span class="term-category" style="font-size: 0.7rem; font-family: 'Orbitron', sans-serif; background: rgba(0, 240, 255, 0.1); color: #00f0ff; padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(0, 240, 255, 0.2);">Teknis</span>
+                    </div>
+                    <div class="term-definition" style="font-size: 0.9rem; color: #9ca3af; line-height: 1.6;">Sayap belakang mobil yang bisa dibuka untuk mengurangi hambatan angin, memberikan tambahan kecepatan saat mencoba menyalip di zona DRS.</div>
+                    <div class="term-simple" style="background: rgba(0, 230, 118, 0.06); border-left: 3px solid #00e676; padding: 8px 12px; border-radius: 0 8px 8px 0; font-size: 0.85rem; color: #cbd5e1; margin-top: 5px;">💡 <strong>Ringkasan:</strong> Tombol "turbo" buka sayap belakang khusus di trek lurus buat gampang nyalip.</div>
+                </div>
+
+                <!-- Item 11 -->
+                <div class="term-item" data-keywords="box box radio pit" style="background: rgba(10, 14, 23, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 22px; display: flex; flex-direction: column; gap: 10px;">
+                    <div class="term-title" style="font-family: 'Orbitron', sans-serif; font-size: 1.05rem; color: #fff; display: flex; justify-content: space-between; align-items: center;">
+                        <span>"Box, Box!"</span>
+                        <span class="term-category" style="font-size: 0.7rem; font-family: 'Orbitron', sans-serif; background: rgba(0, 240, 255, 0.1); color: #00f0ff; padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(0, 240, 255, 0.2);">Radio Tim</span>
+                    </div>
+                    <div class="term-definition" style="font-size: 0.9rem; color: #9ca3af; line-height: 1.6;">Panggilan dari pit wall agar pembalap segera masuk ke pit lane di lap ini juga ("Box" berasal dari bahasa Jerman Boxengasse / garasi pit).</div>
+                    <div class="term-simple" style="background: rgba(0, 230, 118, 0.06); border-left: 3px solid #00e676; padding: 8px 12px; border-radius: 0 8px 8px 0; font-size: 0.85rem; color: #cbd5e1; margin-top: 5px;">💡 <strong>Ringkasan:</strong> Masuk pit sekarang juga!</div>
+                </div>
+
+                <!-- Item 12 -->
+                <div class="term-item" data-keywords="hammer time radio push" style="background: rgba(10, 14, 23, 0.7); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 22px; display: flex; flex-direction: column; gap: 10px;">
+                    <div class="term-title" style="font-family: 'Orbitron', sans-serif; font-size: 1.05rem; color: #fff; display: flex; justify-content: space-between; align-items: center;">
+                        <span>"Hammer Time"</span>
+                        <span class="term-category" style="font-size: 0.7rem; font-family: 'Orbitron', sans-serif; background: rgba(0, 240, 255, 0.1); color: #00f0ff; padding: 4px 8px; border-radius: 6px; border: 1px solid rgba(0, 240, 255, 0.2);">Radio Tim</span>
+                    </div>
+                    <div class="term-definition" style="font-size: 0.9rem; color: #9ca3af; line-height: 1.6;">Instruksi dari insinyur kepada pembalap untuk memacu mobil sekuat tenaga tanpa peduli keausan ban.</div>
+                    <div class="term-simple" style="background: rgba(0, 230, 118, 0.06); border-left: 3px solid #00e676; padding: 8px 12px; border-radius: 0 8px 8px 0; font-size: 0.85rem; color: #cbd5e1; margin-top: 5px;">💡 <strong>Ringkasan:</strong> Gaspol mentok, saatnya ngebut habis-habisan!</div>
+                </div>
+            </div>
+
+            <div id="noResults" class="no-results" style="grid-column: 1 / -1; text-align: center; padding: 40px; color: #9ca3af; font-family: 'Orbitron', sans-serif; display: none;">
+                ❌ Tidak ada istilah yang cocok dengan pencarianmu.
+            </div>
+        </section>
+    </div>
+
+    <!-- Live Search JavaScript -->
+    <!-- Live Search JavaScript dengan Toleransi Kata -->
+    <script>
+        const searchInput = document.getElementById('glossarySearch');
+        const termItems = document.querySelectorAll('.term-item');
+        const noResults = document.getElementById('noResults');
+
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            const searchWords = query.split(/\s+/); // Pecah kata jika mengetik lebih dari satu kata
+            let visibleCount = 0;
+
+            termItems.forEach(item => {
+                const title = item.querySelector('.term-title span').textContent.toLowerCase();
+                const definition = item.querySelector('.term-definition').textContent.toLowerCase();
+                const simple = item.querySelector('.term-simple').textContent.toLowerCase();
+                const keywords = item.getAttribute('data-keywords') || '';
+                
+                const fullText = `${title} ${definition} ${simple} ${keywords}`;
+
+                // Cek apakah semua kata yang diketik ada di dalam teks kartu
+                const isMatch = searchWords.every(word => fullText.includes(word));
+
+                if (query === '' || isMatch) {
+                    item.style.display = 'flex';
+                    visibleCount++;
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+
+            if (visibleCount === 0) {
+                noResults.style.display = 'block';
+            } else {
+                noResults.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

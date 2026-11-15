@@ -1,6 +1,6 @@
 import os
 import httpx
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from backend.api.analysis import router as analysis_router
@@ -33,6 +33,21 @@ async def get_sessions(year: int = 2024):
         except Exception as e:
             print(f"Error OpenF1: {e}")
             return []
+
+from fastapi import HTTPException
+import httpx
+
+@app.get("/telemetry") # Sesuaikan endpoint kamu
+def get_telemetry(session_key: int, driver_number: int):
+    url = f"https://api.openf1.org/v1/laps?session_key={session_key}&driver_number={driver_number}"
+    response = httpx.get(url)
+
+    # Jika data tidak ditemukan di OpenF1 (404) atau kosong
+    if response.status_code == 404 or not response.json():
+        # Kembalikan list kosong atau pesan ramah alih-alih crash
+        return [] 
+
+    return response.json()
 
 # 2. ROUTER ANALISIS LAINNYA
 app.include_router(analysis_router)

@@ -1213,6 +1213,12 @@ th:nth-last-child(-n+2) .help-tip::after {
     display: none !important;
 }
 
+.content-tab.active {
+    display: flex !important;
+    flex-direction: column;
+    gap: 25px;
+}
+
 /* 3D Tyre Lab Layout */
 .tyre-lab-grid {
     display: grid;

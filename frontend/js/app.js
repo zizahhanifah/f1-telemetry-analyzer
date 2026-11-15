@@ -45,6 +45,74 @@ const CIRCUIT_PATHS = {
     "Sepang": "M16 42 L78 42 C85 42, 85 30, 74 30 L34 30 L56 18 C64 14, 56 10, 44 14 L18 28 C12 32, 12 42, 16 42 Z",
 };
 
+const tyreTipsData = {
+    soft: "Ban Soft sangat cepat tapi cepat habis (biasanya 15-20 lap). Tim memakainya saat kualifikasi Qualifying atau akhir balapan untuk mengejar waktu lap tercepat.",
+    medium: "Ban Medium adalah kompon yang paling seimbang antara kecepatan dan daya tahan. Sering dijadikan pilihan utama untuk stint panjang di awal balapan.",
+    hard: "Ban Hard paling awet dan tahan siksaan berlap-lap, tapi butuh waktu lebih lama agar suhunya panas dan memberikan cengkeraman optimal.",
+    inter: "Ban Intermediate digunakan saat sirkuit basah ringan atau gerimis. Memiliki alur khusus untuk membuang air agar mobil tidak mengalami aquaplanin*.",
+    wet: "Ban Wet (Full Wet) digunakan saat hujan sangat deras. Mampu membuang air hingga puluhan liter per detik pada kecepatan tinggi agar ban tetap menempel di aspal."
+};
+
+document.querySelectorAll('.nav-tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.nav-tab-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.content-tab').forEach(t => t.classList.add('hidden'));
+        
+        btn.classList.add('active');
+        const targetId = btn.getAttribute('data-target');
+        const targetEl = document.getElementById(targetId);
+        if (targetEl) targetEl.classList.remove('hidden');
+
+        // Jika membuka Tyre Lab, inisialisasi 3D/interaktif jika diperlukan
+        if (targetId === 'tyreLabSection' && window.initThreeTyre && !window.threeInitialized) {
+            window.initThreeTyre();
+            window.threeInitialized = true;
+        }
+
+        const tipBox = document.querySelector('.beginner-tip-box p') || document.querySelector('.beginner-tip-box');
+        if (tipBox && tyreTipsData[compound]) {
+            // Jika ingin mempertahankan elemen h4 tips, cukup ubah isi paragrafnya
+            const tipParagraph = tipBox.tagName === 'P' ? tipBox : tipBox.querySelector('p');
+            if (tipParagraph) {
+                tipParagraph.innerHTML = tyreTipsData[compound];
+            } else {
+                tipBox.innerHTML = `<h4>💡 Tips untuk Pemula:</h4><p>${tyreTipsData[compound]}</p>`;
+            }
+        }
+    });
+});
+
+// Sembunyikan semua tab kecuali Home saat halaman pertama kali dimuat
+window.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const activeTab = urlParams.get('tab');
+
+    if (activeTab) {
+        let targetId = 'homeSection';
+        if (activeTab === 'telemetry') targetId = 'telemetrySection';
+        if (activeTab === 'tyrelab') targetId = 'tyreLabSection';
+        if (activeTab === 'quiz') targetId = 'quizSection';
+
+        // Sembunyikan semua tab
+        document.querySelectorAll('.content-tab').forEach(tab => {
+            tab.classList.add('hidden');
+            tab.classList.remove('active');
+        });
+
+        // Tampilkan tab yang sesuai dengan parameter URL
+        const targetSection = document.getElementById(targetId);
+        if (targetSection) {
+            targetSection.classList.remove('hidden');
+            targetSection.classList.add('active');
+        }
+
+        // Update tombol aktif di navbar
+        document.querySelectorAll('.nav-tab-btn').forEach(b => b.classList.remove('active'));
+        const activeBtn = document.querySelector(`.nav-tab-btn[data-target="${targetId}"]`);
+        if (activeBtn) activeBtn.classList.add('active');
+    }
+});
+
 function getCircuitSvgUrl(circuitName) {
     const key = Object.keys(CIRCUIT_PATHS).find(k =>
         circuitName && circuitName.toLowerCase().includes(k.toLowerCase())
@@ -563,16 +631,17 @@ window.initThreeTyre = function() {
     const compoundBtns = document.querySelectorAll('.compound-btn');
     const tyreImage = document.getElementById('tyreImageDisplay');
     const tyreImages = {
-        soft: 'assets/soft_tyre.jpeg',
-        medium: 'assets/medium_tyre.jpeg',
-        hard: 'assets/hard_tyre.jpeg',
-        inter: 'assets/inter_tyre.jpeg',
-        wet: 'assets/wet_tyre.jpeg'
+        soft: 'assets/soft_tyre.png',
+        medium: 'assets/medium_tyre.png',
+        hard: 'assets/hard_tyre.png',
+        inter: 'assets/inter_tyre.png',
+        wet: 'assets/wet_tyre.png'
     };
     compoundBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             document.querySelectorAll('.compound-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
+            const compound = btn.getAttribute('data-compound');
             const key = btn.getAttribute('data-compound');
             const info = tyreDataInfo[key];
             if (!info) return;
@@ -584,10 +653,15 @@ window.initThreeTyre = function() {
             if (tyreImage) {
                 tyreImage.style.opacity = '0';
                 setTimeout(() => {
-                    tyreImage.src = tyreImages[key] || 'assets/soft_tyre.jpeg';
+                    tyreImage.src = tyreImages[key] || 'assets/soft_tyre.png';
                     tyreImage.style.opacity = '1';
                 }, 200);
             }
+            const funfactEl = document.getElementById('tyreFunfactText');
+            if (funfactEl && tyreTipsData[compound]) {
+                funfactEl.innerHTML = tyreTipsData[compound];
+            }
+
         });
     });
     document.querySelectorAll('.hotspot').forEach(spot => {
@@ -714,3 +788,30 @@ if (restartQuizBtn) {
 }
 
 loadQuizQuestion();
+
+// Logika Perpindahan Tab / Halaman
+document.querySelectorAll('.nav-tab-btn').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        const targetId = btn.getAttribute('data-target');
+        if (!targetId) return; // Jika tombol berupa link eksternal (misal ke halaman lain), biarkan
+
+        // Sembunyikan semua section tab
+        document.querySelectorAll('.content-tab').forEach(tab => {
+            tab.classList.add('hidden');
+            tab.classList.remove('active');
+        });
+
+        // Tampilkan tab yang dituju
+        const targetSection = document.getElementById(targetId);
+        if (targetSection) {
+            targetSection.classList.remove('hidden');
+            targetSection.classList.add('active');
+        }
+
+        // Perbarui status tombol aktif di navbar
+        document.querySelectorAll('.nav-tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    });
+});
+
+// Data tips / funfact khusus untuk setiap jenis ban
